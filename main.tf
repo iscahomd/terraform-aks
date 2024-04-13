@@ -26,7 +26,7 @@ resource "azurerm_kubernetes_cluster_extension" "this" {
   extension_type = "microsoft.flux"
 }
 
-resource "azurerm_flux_configuration" "this" {
+resource "azurerm_kubernetes_flux_configuration" "this" {
   name                = "bootstrap"
   cluster_id          = azurerm_kubernetes_cluster.this.id
   namespace           = "default"
