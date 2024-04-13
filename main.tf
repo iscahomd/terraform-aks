@@ -42,6 +42,8 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     path = "example"
   }
 
+  scope = "cluster"
+
   depends_on = [
     azurerm_kubernetes_cluster_extension.this
   ]
