@@ -36,6 +36,8 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     url             = "https://github.com/iscahomd/flux-bootstrap.git"
     reference_type  = "branch"
     reference_value = "main"
+
+    sync_interval_in_seconds = 120
   }
 
   kustomizations {
