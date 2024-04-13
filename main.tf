@@ -19,3 +19,31 @@ resource "azurerm_kubernetes_cluster" "this" {
     type = "SystemAssigned"
   }
 }
+
+resource "azurerm_kubernetes_cluster_extension" "this" {
+  name           = "flux"
+  cluster_id     = azurerm_kubernetes_cluster.this.id
+  extension_type = "microsoft.flux"
+}
+
+resource "azurerm_kubernetes_flux_configuration" "this" {
+  name                = "bootstrap"
+  cluster_id          = azurerm_kubernetes_cluster.this.id
+  namespace           = "default"
+
+  git_repository {
+    url             = "https://github.com/iscahomd/flux-bootstrap.git"
+    reference_type  = "branch"
+    reference_value = "main"
+  }
+
+  kustomizations {
+    name = "example"
+    path = "example"
+  }
+
+  depends_on = [
+    azurerm_kubernetes_cluster_extension.this
+  ]
+
+}
