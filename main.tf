@@ -49,6 +49,11 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     garbage_collection_enabled = true
   }
 
+  kustomizations {
+    name = "test"
+    path = "other"
+  }
+
   scope = "cluster"
 
   depends_on = [
