@@ -40,12 +40,23 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
   }
 
   kustomizations {
-    name = "example"
-    path = "example"
+    name = "infrastructure"
+    path = "infrastructure"
 
     sync_interval_in_seconds = 120
 
     garbage_collection_enabled = true
+  }
+
+  kustomizations {
+    name = "application"
+    path = "application"
+
+    sync_interval_in_seconds = 120
+
+    garbage_collection_enabled = true
+    
+    depends_on = ["infrastructure"]
   }
 
   scope = "cluster"
