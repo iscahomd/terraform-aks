@@ -22,7 +22,7 @@ resource "azurerm_kubernetes_cluster" "this" {
 
 resource "azurerm_kubernetes_cluster_extension" "this" {
   name           = "flux"
-  cluster_id     = azurerm_kubernetes_cluster.test.id
+  cluster_id     = azurerm_kubernetes_cluster.this.id
   extension_type = "microsoft.flux"
 }
 
