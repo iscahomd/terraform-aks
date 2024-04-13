@@ -24,3 +24,14 @@ variable "location" {
   type        = string
   default     = "northcentralus"
 }
+
+variable "dns_prefix" {
+  description = <<-EOT
+    DNS prefix specified when creating the managed cluster. 
+    Possible values must begin and end with a letter or number,
+    contain only letters, numbers, and hyphens and be between 1 and 54 characters in length.
+    Changing this forces a new resource to be created.
+  EOT
+  type = string
+  default = "single-aks"
+}
