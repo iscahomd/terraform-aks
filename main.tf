@@ -5,6 +5,7 @@ resource "azurerm_resource_group" "this" {
 
 resource "azurerm_kubernetes_cluster" "this" {
   name                = var.cluster_name
+  # BUG: this should be coming from variables.tf
   location            = "West Europe"
   resource_group_name = azurerm_resource_group.this.name
   dns_prefix          = var.dns_prefix
@@ -40,6 +41,8 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
   kustomizations {
     name = "example"
     path = "example"
+
+    sync_interval_in_seconds = 120
   }
 
   scope = "cluster"
