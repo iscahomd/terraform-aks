@@ -1,0 +1,92 @@
+name: "Terraform"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+
+env:
+  TF_IN_AUTOMATION: true
+
+jobs:
+
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      ARM_USE_OIDC: true
+    environment: single
+    permissions:
+      contents: read
+      id-token: write # This is required for requesting the JWT
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Node.js # Required for setup-terraform action
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        run: terraform init -lock-timeout=300s
+
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+        run: |
+          if terraform plan -no-color -input=false -lock-timeout=300s -out=tfplan
+          then
+            PLAN=$(terraform show -no-color tfplan)
+            echo "PLAN<<EOF" >> $GITHUB_ENV
+            echo "$PLAN" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          else
+            exit $?
+          fi
+        continue-on-error: true
+
+      - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+            <details><summary>Show Plan</summary>
+
+            \`\`\`terraform
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>
+
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false -lock-timeout=300s
