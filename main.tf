@@ -47,7 +47,7 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     sync_interval_in_seconds = 120
   }
 
-  scope = "namespace"
+  scope = "cluster"
 
   depends_on = [
     azurerm_kubernetes_cluster_extension.this
