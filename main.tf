@@ -36,4 +36,14 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     reference_type  = "branch"
     reference_value = "main"
   }
+
+  kustomizations {
+    name = "example"
+    path = "example"
+  }
+
+  depends_on = [
+    azurerm_kubernetes_cluster_extension.this
+  ]
+
 }
