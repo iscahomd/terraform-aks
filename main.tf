@@ -5,8 +5,7 @@ resource "azurerm_resource_group" "this" {
 
 resource "azurerm_kubernetes_cluster" "this" {
   name                = var.cluster_name
-  # BUG: this should be coming from variables.tf
-  location            = "West Europe"
+  location            = var.location
   resource_group_name = azurerm_resource_group.this.name
   dns_prefix          = var.dns_prefix
 
