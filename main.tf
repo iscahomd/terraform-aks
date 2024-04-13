@@ -45,6 +45,8 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     path = "example"
 
     sync_interval_in_seconds = 120
+
+    garbage_collection_enabled = true
   }
 
   scope = "cluster"
