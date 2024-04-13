@@ -30,7 +30,7 @@ resource "azurerm_kubernetes_cluster_extension" "this" {
 resource "azurerm_kubernetes_flux_configuration" "this" {
   name                = "bootstrap"
   cluster_id          = azurerm_kubernetes_cluster.this.id
-  namespace           = "default"
+  namespace           = "flux-system"
 
   git_repository {
     url             = "https://github.com/iscahomd/flux-bootstrap.git"
