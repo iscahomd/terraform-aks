@@ -95,7 +95,7 @@ resource "azurerm_mysql_server" "ghost_db" {
   ssl_enforcement_enabled = false
 
   auto_grow_enabled                 = false
-  backup_retention_days             = 1
+  backup_retention_days             = 7
   geo_redundant_backup_enabled      = false
   infrastructure_encryption_enabled = false
   public_network_access_enabled     = true
