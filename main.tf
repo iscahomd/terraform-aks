@@ -90,7 +90,7 @@ resource "azurerm_mysql_server" "ghost_db" {
 
   version    = "8.0"
   storage_mb = 5120
-  sku_name   = "B_Gen5_1"
+  sku_name   = "B_Gen4_1"
 
   ssl_enforcement_enabled = false
 
