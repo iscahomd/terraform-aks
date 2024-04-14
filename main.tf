@@ -94,3 +94,11 @@ resource "azurerm_mysql_flexible_server" "ghost_db" {
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
 }
+
+resource "azurerm_mysql_flexible_database" "dev" {
+  name                = "dev"
+  resource_group_name = azurerm_resource_group.this.name
+  server_name         = azurerm_mysql_flexible_server.ghost_db.name
+  charset             = "utf8mb4"
+  collation           = "utf8mb4_unicode_ci"
+}
