@@ -88,7 +88,7 @@ resource "azurerm_mysql_flexible_server" "ghost_db" {
   administrator_login    = "admin"
   administrator_password = random_password.mysql_password.result
 
-  version  = "8.0"
+  version  = "8.0.21"
   sku_name = "B_Standard_B1s"
 
   backup_retention_days         = 7
