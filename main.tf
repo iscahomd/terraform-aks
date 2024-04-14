@@ -91,7 +91,6 @@ resource "azurerm_mysql_flexible_server" "ghost_db" {
   version  = "8.0.21"
   sku_name = "B_Standard_B1s"
 
-  backup_retention_days         = 7
-  geo_redundant_backup_enabled  = false
-  public_network_access_enabled = true
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
 }
