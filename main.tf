@@ -27,9 +27,9 @@ resource "azurerm_kubernetes_cluster_extension" "this" {
 }
 
 resource "azurerm_kubernetes_flux_configuration" "this" {
-  name                = "bootstrap"
-  cluster_id          = azurerm_kubernetes_cluster.this.id
-  namespace           = "flux-system"
+  name       = "bootstrap"
+  cluster_id = azurerm_kubernetes_cluster.this.id
+  namespace  = "flux-system"
 
   git_repository {
     url             = "https://github.com/iscahomd/flux-bootstrap.git"
@@ -55,7 +55,7 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     sync_interval_in_seconds = 30
 
     garbage_collection_enabled = true
-    
+
     depends_on = ["infrastructure"]
   }
 
@@ -78,4 +78,25 @@ resource "random_password" "mysql_password" {
   override_special = "_"
   special          = true
   upper            = true
+}
+
+resource "azurerm_mysql_server" "ghost_db" {
+  name                = "ghost-db"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.this.name
+
+  administrator_login          = "admin"
+  administrator_login_password = random_password.mysql_password.result
+
+  version    = "8.0"
+  storage_mb = 512
+  sku_name   = "B_Gen5_1"
+
+  ssl_enforcement_enabled = false
+
+  auto_grow_enabled                 = false
+  backup_retention_days             = 1
+  geo_redundant_backup_enabled      = false
+  infrastructure_encryption_enabled = false
+  public_network_access_enabled     = true
 }
