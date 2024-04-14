@@ -32,6 +32,6 @@ variable "dns_prefix" {
     contain only letters, numbers, and hyphens and be between 1 and 54 characters in length.
     Changing this forces a new resource to be created.
   EOT
-  type = string
-  default = "single-aks"
+  type        = string
+  default     = "single-aks"
 }
