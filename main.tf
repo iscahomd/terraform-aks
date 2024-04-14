@@ -81,7 +81,7 @@ resource "random_password" "mysql_password" {
 }
 
 resource "azurerm_mysql_flexible_server" "ghost_db" {
-  name                = "ghost-db"
+  name                = "iscahomd-ghost-db"
   location            = var.location
   resource_group_name = azurerm_resource_group.this.name
 
