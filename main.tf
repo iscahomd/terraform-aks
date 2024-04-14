@@ -36,14 +36,14 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     reference_type  = "branch"
     reference_value = "main"
 
-    sync_interval_in_seconds = 120
+    sync_interval_in_seconds = 30
   }
 
   kustomizations {
     name = "infrastructure"
     path = "infrastructure"
 
-    sync_interval_in_seconds = 120
+    sync_interval_in_seconds = 30
 
     garbage_collection_enabled = true
   }
@@ -52,7 +52,7 @@ resource "azurerm_kubernetes_flux_configuration" "this" {
     name = "application"
     path = "application"
 
-    sync_interval_in_seconds = 120
+    sync_interval_in_seconds = 30
 
     garbage_collection_enabled = true
     
