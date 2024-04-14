@@ -89,7 +89,7 @@ resource "azurerm_mysql_server" "ghost_db" {
   administrator_login_password = random_password.mysql_password.result
 
   version    = "8.0"
-  storage_mb = 512
+  storage_mb = 5120
   sku_name   = "B_Gen5_1"
 
   ssl_enforcement_enabled = false
